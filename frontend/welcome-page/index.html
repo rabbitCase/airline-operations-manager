@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <script src="./main.js" defer></script>
+    <title>Welcome</title>
+</head>
+<body>
+    <div id="welcome-main">
+        <div id="sidebar-wrapper">
+        <div style="font-size: 45px; color: rgb(255, 255, 255); font-weight: 700; margin-bottom: 30px;margin-left: 15px;">Search for Flights</div>
+            <div id="tracker-box">
+                <div id="tracker-fields">
+                    <div class="tracker-input">
+                        <label for="">Flying from</label>
+                        <select id="flying-from">
+                            <option value="mumbai">Mumbai</option>
+                            <option value="delhi">Delhi</option>
+                            <option value="bengaluru">Bengaluru</option>
+                            <option value="kolkata">Kolkata</option>
+                            <option value="hyderabad">Hyderabad</option>
+                        </select>
+                    </div>
+                    <div class="tracker-input">
+                        <label for="">Flying to</label>
+                        <select id="flying-to">
+                            <option value="mumbai">Mumbai</option>
+                            <option value="delhi" selected>Delhi</option>
+                            <option value="bengaluru">Bengaluru</option>
+                            <option value="kolkata">Kolkata</option>
+                            <option value="hyderabad">Hyderabad</option>
+                        </select>
+                    </div>
+                    <div class="tracker-input">
+                        <label for="">Trip Date</label>
+                        <input type="date" id="trip-date" value = "2025-04-13">
+                    </div>
+                </div>
+                <div id="flight-search-button">
+                    <button id="flight-search">Search Flights</button>
+                </div>
+            </div>
+        </div>
+        <div id="results">
+           
+        </div>
+    </div>
+</body>
+</html>

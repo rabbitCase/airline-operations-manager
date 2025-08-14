@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./style.css" />
+		<script src="main.js" defer></script>
+		<title>Staff Registration</title>
+	</head>
+	<body class="staff-login">
+		<div class="login-box">
+			<h2>Staff Registration</h2>
+			<form>
+				<p>
+					<input type="text" id="name" placeholder="Name" required />
+				</p>
+				<p>
+					<input
+						type="number"
+						id="staffid"
+						placeholder="Staff ID"
+						min="1"
+						required />
+				</p>
+				<p>
+					<input
+						type="number"
+						id="airportid"
+						placeholder="Airport ID"
+						min="1"
+						required />
+				</p>
+				<p>
+					<input type="text" id="role" placeholder="Role" required />
+				</p>
+				<p>
+					<input
+						type="password"
+						id="password"
+						placeholder="Password"
+						required />
+				</p>
+				<p>
+					<input
+						type="password"
+						id="password1"
+						placeholder="Confirm Password"
+						required />
+				</p>
+				<div class="button-container">
+					<a
+						href="http://localhost:3000/login/"
+						target="_blank"
+						style="font-size: 15px; color: rgb(2,162,202);"
+						>Login instead</a
+					>
+					<button id="submit-button">Submit</button>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Lost and Found</title>
+		<link rel="stylesheet" href="./style.css" />
+		<script src="main.js" defer></script>
+	</head>
+	<body>
+		<div id="main-container">
+			<div id="background-container">
+				<label id="credits"
+					>Photo by
+					<a
+						href="https://unsplash.com/@klalive?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+						>Jue Huang</a
+					>
+					on
+					<a
+						href="https://unsplash.com/photos/people-walking-inside-airport-station-qUfecpBw5b8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash"
+						>Unsplash</a
+					>
+				</label>
+			</div>
+
+			<div id="form-container">
+				<form>
+					<div id="info-container">
+						<label for="info-text" id="info-text">
+							Staff Management portal<br />Lost and Found</label
+						>
+					</div>
+					<div id="input-container">
+						<div id="area">
+							<label id="comment">Enter item details</label>
+							<div class="input-fields" id="firstname-container">
+								<label for="firstname" id="first-name">Item ID</label>
+								<input
+									type="text"
+									name="itemid"
+									id="firstname"
+									placeholder="1"
+									required />
+							</div>
+
+							<div class="input-fields" id="lastname-container">
+								<label for="lastname" id="last-name">Airport ID</label>
+								<input
+									type="text"
+									name="airportid"
+									id="lastname"
+									placeholder="1"
+									required />
+							</div>
+
+							<div class="input-fields" id="email-container">
+								<label for="date" id="dateid">Date Found</label>
+								<input
+									type="date"
+									name="date"
+									id="date"
+									placeholder="2/2/2023"
+									required />
+							</div>
+						</div>
+
+						<div class="container-group" id="contact-container">
+							<div class="input-fields" id="phone-container">
+								<label for="description">Description</label>
+								<textarea name="description" id="resizeable-desc"></textarea>
+							</div>
+						</div>
+					</div>
+					<div id="button-container">
+						<button type="submit" id="submit-button">Create Log</button>
+
+						<!-- <label
+							>Facing issues?
+							<a href="" id="specialhref"><u>helpline</u></a></label
+						> -->
+					</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

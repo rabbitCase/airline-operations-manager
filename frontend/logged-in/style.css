@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Faustina:ital,wght@0,300..800;1,300..800&display=swap');
+body{
+    margin: 0;
+    height: 100vh;
+    background-color: rgb(24, 24, 24);
+    font-family: 'Faustina';
+    background: url(https://www.bengaluruairport.com/static/media/outdoor-plant-mobile.560619c92c806b63a29886d8fff0007a.svg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-y: 400px;
+    background-position-x: -400px;
+    backdrop-filter: invert(0.9);
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+
+#greeting{
+    font-size: 150px;
+    font-weight: 700;
+    border-bottom: 3px solid rgb(239, 2, 2);
+    color: rgb(213, 181, 37);
+}
+#actions{
+    font-size: 80px;
+    color: blueviolet;
+    text-shadow: 2px 2px 50px rgb(132, 0, 255);
+}
+#actions-container{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    margin-top: 40px;
+    justify-content: center;
+    gap: 30px;
+    align-items: center;
+}
+#buttons{
+    display: flex;
+    gap: 20px;
+}
+#buttons button{
+    height: 80px;
+    width: 300px;
+    cursor: pointer;
+    color: white;
+    border: 2px solid rgb(2, 162, 255);
+    box-shadow: 0 0 8px 1px rgb(5, 97, 189);
+    background-color: transparent;
+    border-radius: 10px;
+    font-size: 30px ;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+#buttons button:hover{
+    background-color: rgb(5, 147, 255);
+    box-shadow: 0 0 20px 5px rgb(1, 166, 255);
+}

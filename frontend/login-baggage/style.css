@@ -1,0 +1,183 @@
+@import url("https://fonts.googleapis.com/css2?family=Playwrite+HU:wght@100..400&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+html,
+body {
+	margin: 0;
+	height: 100%;
+	background-color: #eeee;
+}
+
+a {
+	color: rgb(14, 23, 88);
+	font-weight: 900;
+	transition: color 0.3s ease;
+}
+
+a:hover {
+	color: #3ea8ff;
+}
+
+#main-container {
+	display: flex;
+	justify-content: end;
+	border: 2px solid black;
+	height: 100vh;
+}
+
+#background-container {
+	display: flex;
+	width: 40%;
+	background-image: url("res/bg_img.jpg");
+	background-repeat: no-repeat;
+	background-size: 610px;
+	color: #ffffff;
+	font-family: "Roboto", "ariel";
+	font-size: 12px;
+	padding-bottom: 5px;
+	align-items: end;
+	justify-content: center;
+}
+
+#form-container {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	margin-top: 60px;
+	width: 60%;
+	height: 85%;
+}
+
+#info-container {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: center;
+	height: 45%;
+	border-radius: 5px;
+	font-size: 30px;
+	font-weight: 500;
+	margin-left: 30px;
+}
+
+#input-container {
+	font-family: "roboto", "ariel";
+	font-weight: 500;
+	font-size: 14px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 30px;
+	padding-left: 30px;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	background-color: #ffffff;
+	box-shadow: 1px 3px 10px black;
+}
+
+#button-container {
+	font-family: "roboto", "ariel";
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: flex-end;
+	margin-left: 30px;
+	border-radius: 5px;
+	width: 250px;
+}
+
+.container-group {
+	/*container of the name, contact and password fields*/
+	display: flex;
+	flex: 1 1 100%;
+	gap: 200px;
+	justify-content: flex-start;
+}
+
+.input-fields {
+	/*container of the labels and input fields of firstname, lastname, email, phoneno, password and confirm password*/
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 10px;
+}
+
+#submit-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 10px;
+	font-size: 20px;
+	height: 45px;
+	width: 175px;
+	margin-bottom: 20px;
+	color: #ffffff;
+	background-color: #689343;
+	transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+#submit-button:hover {
+	background-color: #f4dc23;
+	color: black;
+	transform: scale(1.02);
+}
+
+#submit-button:active {
+	transform: scale(0.98);
+}
+
+#info-text {
+	font-family: "roboto";
+	line-height: 1.4;
+}
+
+#comment {
+	font-size: 20px;
+	margin-bottom: 15px;
+}
+
+input {
+	border: 2px solid grey;
+	border-radius: 5px;
+	height: 25px;
+	width: 230px;
+	transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:hover {
+	transform: scale(1.01);
+	box-shadow: 1px 2px 5px black;
+}
+
+input:focus {
+	outline: none;
+	border: 2px solid rgb(29, 126, 223);
+	box-shadow: 1px 2px 5px black;
+}
+
+input:valid:not(:focus) {
+	border-color: green;
+}
+
+input:invalid {
+	border-color: red;
+}
+
+#specialhref {
+	color: #4ca932;
+}
+
+#contact-container {
+	display: flex;
+}
+
+#credits {
+	background-color: rgb(255, 255, 255);
+	color: black;
+	font-weight: 600;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+}

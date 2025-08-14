@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Faustina:ital,wght@0,300..800;1,300..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Faustina:ital,wght@0,300..800;1,300..800&display=swap');
+body{
+    margin: 0;
+    text-align: center;
+    background-color: rgb(21, 21, 21);
+    font-family: 'Open Sans','ariel';
+}
+
+a{
+    text-decoration: none;
+    color: white;
+}
+
+h1{
+    margin:0;
+    margin-bottom: 20px;
+    font-size: 100px;
+}
+h2{
+    margin: 0;
+    font-size: 70px;
+}
+
+#icon-container{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap:20px;
+    padding-top: 60px;
+    padding-right: 60px;
+    box-sizing: border-box;
+    height: 40px;
+    width: 99%;
+    filter: blur(10px);
+    transition: filter 0.9s ease-in-out, transform 0.5s ease;
+}
+#icon-container svg{
+    height: 30px;
+    filter: invert(1);
+    will-change: transform;
+    transition:  border 0.1s ease;
+}
+#icon-container svg:hover{
+    cursor: pointer;
+    border-radius: 15px;
+    border-bottom: 4px solid rgb(234, 70, 11);
+    border-top: 4px solid rgb(246, 98, 6);
+    box-shadow: 0 0 20px 5px rgb(255, 100, 3);
+}
+#icon-container svg:active{
+    animation: wiggle 300ms ease-in-out;
+}
+@keyframes wiggle{
+    0%{
+        rotate: 0px;
+    }
+    20%{
+        transform: rotateZ(-10deg);
+    }
+    40%{
+        transform: rotateZ(20deg);
+    }
+    60%{
+        transform: rotateZ(-15deg);
+    }
+    80%{
+        transform: rotateZ(10deg);
+    }
+    100%{
+        transform: rotateZ(-10deg);
+    }
+}
+
+#headers{
+    background-image: linear-gradient(rgb(255, 11, 255),rgb(129, 9, 129),rgb(35, 34, 34),rgb(35, 34, 34));
+    color: transparent;
+    background-clip: text;
+    margin-top: 100px;
+    text-shadow: 0 0 1px rgba(230, 9, 255, 0.705);
+    filter: blur(10px);
+    transition: filter 0.9s ease-in-out, transform 0.5s ease;
+}
+
+#main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+#redirect-container{
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: fit-content;
+}
+#button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    margin-top: 100px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    border: 2px solid rgb(176, 11, 242);
+    box-shadow: 0 0 8px 1px rgb(136, 1, 163);
+    border-radius: 15px;
+    height: 50px;
+    width: fit-content;
+    filter: blur(10px);
+    cursor: pointer;
+    font-family: 'Faustina','ariel';
+    color: white;
+    background-color: transparent;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, filter 0.9s ease-in-out;
+}
+#button:hover{
+    background-color: rgb(157, 0, 255);
+    box-shadow: 0 0 20px 5px rgb(151, 0, 252);
+}
+#button svg{
+    filter: invert(1);
+    height: 25px;
+    margin-left: 8px;
+    margin-top: 5px;
+}
+#button-staff{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px;
+    margin-top: 100px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    border: 2px solid rgb(11, 146, 242);
+    box-shadow: 0 0 8px 1px rgb(1, 79, 163);
+    border-radius: 15px;
+    height: 50px;
+    width: fit-content;
+    filter: blur(10px);
+    cursor: pointer;
+    font-family: 'Faustina','ariel';
+    color: white;
+    background-color: transparent;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, filter 0.9s ease-in-out;
+}
+#button-staff:hover{
+    background-color: rgb(0, 128, 255);
+    box-shadow: 0 0 20px 5px rgb(0, 185, 252);
+}
+#button-staff svg{
+    filter: invert(1);
+    height: 25px;
+    margin-left: 8px;
+    margin-top: 5px;
+}
