@@ -1,4 +1,0 @@
-*.env
-node_modules/
-connectiontest.html
-connectiontest.js

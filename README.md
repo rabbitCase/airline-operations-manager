@@ -1,74 +1,36 @@
-# Aiport Management System
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-Database design/architecture, Entity-Relationship models: Suvan Kumar Shee <a href="http://github.com/skshee/">(skshee)</a>
+## Getting Started
 
-Login authentication logic, UI design/styling, bug fixes: Armaan Gupta <a href="http://github.com/poseidon-boi/">(poseidon-boi)</a>
+First, run the development server:
 
-Server design, API connections and UI design/styling: Gokul Nair <a href="http://github.com/rabbitCase/">(rabbitCase)</a>
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-<a href="https://github.com/rabbitCase/dbms-sem4-ams/blob/main/frontend/README.md">Additional Credits</a>
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-<h2>Project Functionalities</h2>
-Airport Management System allows airport staff to manage airport operations which include:
-<ul>
-  <li>Checking-in Baggage</li>
-  <li>Logging lost items in the Lost & Found</li>
-  <li>Updating flight status (delayed/on-time) based on the information received from airlines</li>
-</ul>
-The system also provides a portal for newly employed staff to register using their issued identification number. Passengers visiting the site have an option to view all flights arriving/departing from the airport and check their schedule as updated by the staff.
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-<h2>Technologies Used</h2>
-<ul>
-  <li>Database: MySQL</li>
-  <li>UI Design: HTML, CSS</li>
-  <li>Frontend and Backend Functionality: JavaScript(Node.js and Express.js)</li>
-  <li>Version Control: Git and Github</li>
-</ul>
-<h2>Run Locally</h2>
-<ul>
-  <li>
-    Clone the database
-    <ul>
-      <li>Go to <a href="https://github.com/rabbitCase/airport-management-system/blob/main/Commands.txt">Commands.txt</a></li>
-      <li>Copy all SQL statements</li>
-      <li>Paste into your MySQL Client (press 'enter' to execute the last command)</li>
-      <li>You should now have the database created with sample values for all tables</li>
-    </ul>
-  </li>
-  <li>
-    Clone the repository into a new folder
-    <ul>
-      <li><code> git clone https://github.com/rabbitCase/airport-management-system.git </code></li>
-    </ul
-  </li>
-  <li>
-    Change to the backend folder
-    <ul>
-      <li><code> cd airport-management-system/backend</code></li>
-    </ul>
-  </li>
-  <li>
-    Install dependencies
-    <ul>
-      <li><code>npm install</code></li>
-    </ul>
-  </li>
-  <li>
-    In the backend folder, go to the server.js file
-    <ul>
-      <li>Change 'process.env.DB_PASSWORD' in the 'password' field (line 21) to your MySQL password (within <code>''</code>)</li>
-      <li><code>password : 'your_password'</code></li>
-      <li>Save the file</code></li>
-    </ul>
-  </li>
-  <li>
-    Run the dev script
-    <ul>
-      <li><code> npm run dev</code></li>
-    </ul>
-  </li>
-  <li>
-    Application should be available at http://localhost:3000
-  </li>
-  
-</ul>
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
