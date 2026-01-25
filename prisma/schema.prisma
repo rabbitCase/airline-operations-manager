@@ -1,0 +1,175 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Airport {
+  id                     Int      @id @map("AirportID")
+  name                   String   @map("Name") @db.VarChar(200)
+  location               String   @map("Location") @db.VarChar(200)
+  terminals               Int      @map("Terminals")
+  
+  staff                  Staff[]
+  gates                  Gate[]
+  lostAndFound           LostAndFound[]
+  departureFlights       Flight[] @relation("DepartureAirport")
+  arrivalFlights         Flight[] @relation("ArrivalAirport")
+  worksFor               WorksFor[]
+  airportAirlines        AirportAirline[]
+
+  @@map("airport")
+}
+
+model Airline {
+  id                     Int      @id @map("AirlineID")
+  name                   String   @map("Name") @db.VarChar(200)
+  code                   String   @map("Code") @db.VarChar(5)
+  
+  flights                Flight[]
+  airportAirlines        AirportAirline[]
+
+  @@map("airline")
+}
+
+model Passenger {
+  id                     Int      @id @map("PassengerID")
+  name                   String   @map("Name") @db.VarChar(200)
+  dob                    DateTime @map("DOB") @db.Date
+  phoneNumber            BigInt   @map("PhoneNumber")
+  
+  baggage                Baggage[]
+  flightPassengers       FlightPassenger[]
+
+  @@map("passenger")
+}
+
+model Staff {
+  id                     Int      @id @map("StaffID")
+  airportId              Int      @map("AirportID")
+  name                   String   @map("Name") @db.VarChar(200)
+  password               String   @map("Password") @db.VarChar(25)
+  
+  airport                Airport  @relation(fields: [airportId], references: [id])
+  worksFor               WorksFor[]
+  staffRoles             StaffRole[]
+
+  @@map("staff")
+}
+
+model Gate {
+  id                     Int      @id @map("GateID")
+  airportId              Int      @map("AirportID")
+  status                 String   @map("Status") @db.VarChar(50)
+  terminal               Int      @map("Terminal")
+  
+  airport                Airport  @relation(fields: [airportId], references: [id])
+  flightGates            FlightGate[]
+
+  @@map("gate")
+}
+
+model Baggage {
+  passengerId            Int      @map("PassengerID")
+  baggageTag             String   @map("BaggageTag") @db.VarChar(200)
+  weight                 Float    @map("Weight") @db.DoublePrecision
+  departureAirport       String   @map("DepartureAirport") @db.VarChar(200)
+  arrivalAirport         String   @map("ArrivalAirport") @db.VarChar(200)
+  
+  passenger              Passenger @relation(fields: [passengerId], references: [id])
+
+  @@id([passengerId, baggageTag])
+  @@map("baggage")
+}
+
+model LostAndFound {
+  id                     Int      @id @map("ItemID")
+  airportId              Int      @map("AirportID")
+  dateFound              DateTime @map("DateFound") @db.Date
+  description            String   @map("Description")
+  
+  airport                Airport  @relation(fields: [airportId], references: [id])
+
+  @@map("lostandfound")
+}
+
+model Flight {
+  id                     Int      @id @map("FlightID")
+  airlineId              Int      @map("AirlineID")
+  departureAirportId     Int      @map("DepartureAirportID")
+  arrivalAirportId       Int      @map("ArrivalAirportID")
+  departureTime          DateTime @map("DepartureTime")
+  arrivalTime            DateTime @map("ArrivalTime")
+  delay                  Int      @map("Delay")
+  
+  airline                Airline  @relation(fields: [airlineId], references: [id])
+  departureAirport       Airport  @relation("DepartureAirport", fields: [departureAirportId], references: [id])
+  arrivalAirport         Airport  @relation("ArrivalAirport", fields: [arrivalAirportId], references: [id])
+  flightPassengers       FlightPassenger[]
+  flightGates            FlightGate[]
+
+  @@map("flight")
+}
+
+model WorksFor {
+  staffId                Int      @map("StaffID")
+  airportId              Int      @map("AirportID")
+  
+  staff                  Staff    @relation(fields: [staffId], references: [id])
+  airport                Airport  @relation(fields: [airportId], references: [id])
+
+  @@id([staffId, airportId])
+  @@map("works_for")
+}
+
+model FlightPassenger {
+  flightId               Int      @map("FlightID")
+  passengerId            Int      @map("PassengerID")
+  
+  flight                 Flight   @relation(fields: [flightId], references: [id])
+  passenger              Passenger @relation(fields: [passengerId], references: [id])
+
+  @@id([flightId, passengerId])
+  @@map("flight_passenger")
+}
+
+model AirportAirline {
+  airportId              Int      @map("AirportID")
+  airlineId              Int      @map("AirlineID")
+  
+  airport                Airport  @relation(fields: [airportId], references: [id])
+  airline                Airline  @relation(fields: [airlineId], references: [id])
+
+  @@id([airportId, airlineId])
+  @@map("airport_airline")
+}
+
+model StaffRole {
+  staffId                Int      @map("StaffID")
+  role                   String   @map("Role") @db.VarChar(200)
+  
+  staff                  Staff    @relation(fields: [staffId], references: [id])
+
+  @@id([staffId, role])
+  @@map("staff_role")
+}
+
+model FlightGate {
+  flightId               Int      @map("FlightID")
+  gateId                 Int      @map("GateID")
+  
+  flight                 Flight   @relation(fields: [flightId], references: [id])
+  gate                   Gate     @relation(fields: [gateId], references: [id])
+
+  @@id([flightId, gateId])
+  @@map("flight_gate")
+}
