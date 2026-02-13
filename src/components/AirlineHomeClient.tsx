@@ -61,17 +61,20 @@ export default function AirlineHomeClient() {
 
   const handleSignOut = async () => {
     try {
-      await deleteAnonymousUser();
-    } catch (err) {
-      console.error("Failed to delete anonymous user", err);
-    }
-    await signOut({
-      fetchOptions: {
-        onSuccess: () => {
-          router.refresh();
+      if (session?.user.isAnonymous) {
+        await deleteAnonymousUser();
+      }
+
+      await signOut({
+        fetchOptions: {
+          onSuccess: () => {
+            router.refresh();
+          },
         },
-      },
-    });
+      });
+    } catch (err) {
+      console.error("Sign out flow failed", err);
+    }
   };
 
   const handleSearch = async () => {
