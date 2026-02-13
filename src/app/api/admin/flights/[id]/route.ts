@@ -16,7 +16,7 @@ async function requireAdmin(request: NextRequest) {
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await requireAdmin(request);
 
@@ -24,7 +24,8 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const id = Number(params.id);
+  const { id: idParam } = await params;
+  const id = Number(idParam);
 
   if (!id || Number.isNaN(id)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
@@ -72,7 +73,7 @@ export async function PATCH(
   const arrival = arrivalTime ? new Date(arrivalTime) : existing.arrivalTime;
   const durationMinutes = Math.max(
     30,
-    Math.round((arrival.getTime() - departure.getTime()) / (60 * 1000))
+    Math.round((arrival.getTime() - departure.getTime()) / (60 * 1000)),
   );
 
   const updated = await prisma.flight.update({
@@ -98,7 +99,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const session = await requireAdmin(request);
 
@@ -106,7 +107,8 @@ export async function DELETE(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const id = Number(params.id);
+  const { id: idParam } = await params;
+  const id = Number(idParam);
 
   if (!id || Number.isNaN(id)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
@@ -140,4 +142,3 @@ export async function DELETE(
 
   return NextResponse.json({ ok: true });
 }
-

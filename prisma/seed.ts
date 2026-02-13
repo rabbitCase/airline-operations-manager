@@ -36,7 +36,7 @@ async function main() {
 
   console.log("Seeding 500 flights...");
 
-  for (let i = 0; i < 500; i++) {
+  for (let i = 0; i < 5000; i++) {
     const airline = AIRLINES[Math.floor(Math.random() * AIRLINES.length)];
     const fromAirport = AIRPORTS[Math.floor(Math.random() * AIRPORTS.length)];
     let toAirport = AIRPORTS[Math.floor(Math.random() * AIRPORTS.length)];

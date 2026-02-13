@@ -164,7 +164,7 @@ export default function AirlineHomeClient() {
 
       <main className="flex-1">
         <div className="mx-auto grid max-w-6xl gap-6 px-6 py-8 md:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
-          <Card className="border-black/15 shadow-md">
+          <Card className="border-black/15 shadow-md h-fit md:sticky md:top-8">
             <CardHeader>
               <CardTitle className="text-lg">Search flights</CardTitle>
             </CardHeader>

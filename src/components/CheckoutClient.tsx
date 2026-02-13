@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 
@@ -73,10 +72,6 @@ export default function CheckoutClient({
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
 
-  const availableSeats = seats.filter(
-    (seat) => !seat.isBlocked && !seat.bookingSeat,
-  );
-
   const basePerPassenger =
     flight.basePriceINR + Math.round(flight.durationMinutes * 5);
   const baseFare = basePerPassenger * passengers;
@@ -106,28 +101,27 @@ export default function CheckoutClient({
 
     setIsCheckingOut(true);
     try {
-      toast.success("Demo checkout completed");
-      // const response = await fetch("/api/bookings", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({
-      //     flightId: flight.id,
-      //     passengersCount: passengers,
-      //     isStudent,
-      //     mealPreference: meal,
-      //     discountCredits: extraCredits ? 1 : 0,
-      //     extraBaggageKg: extraBaggage ? 10 : 0,
-      //     seatNumbers: selectedSeats,
-      //   }),
-      // });
+      const response = await fetch("/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          flightId: flight.id,
+          passengersCount: passengers,
+          isStudent,
+          mealPreference: meal,
+          discountCredits: extraCredits ? 1 : 0,
+          extraBaggageKg: extraBaggage ? 10 : 0,
+          seatNumbers: selectedSeats,
+        }),
+      });
 
-      // if (response.ok) {
-      //   toast.success("Demo checkout completed");
-      // } else {
-      //   toast.error("Something went wrong during checkout");
-      // }
+      if (response.ok) {
+        toast.success("Demo checkout completed");
+      } else {
+        toast.error("Something went wrong during checkout");
+      }
     } finally {
       setIsCheckingOut(false);
     }
@@ -210,7 +204,7 @@ export default function CheckoutClient({
                     {flight.durationMinutes % 60}m
                   </div>
                   <div>
-                    {passengers} {passengers == 1 ? "passenger" : "paddengers"}
+                    {passengers} {passengers == 1 ? "passenger" : "passengers"}
                   </div>
                   {isStudent && <div>Student discount applied</div>}
                 </div>
@@ -225,17 +219,21 @@ export default function CheckoutClient({
                 </div>
                 <div className="rounded-xl border border-dashed border-black/15 bg-[#f8fafc] p-3">
                   <div className="grid grid-cols-6 gap-1 text-xs">
-                    {availableSeats.map((seat) => {
+                    {seats.map((seat) => {
+                      const isTaken = seat.isBlocked || !!seat.bookingSeat;
                       const active = selectedSeats.includes(seat.seatNumber);
                       return (
                         <button
                           key={seat.id}
                           type="button"
+                          disabled={isTaken}
                           onClick={() => handleToggleSeat(seat.seatNumber)}
                           className={`flex h-7 items-center justify-center rounded-md border text-[11px] transition ${
                             active
                               ? "border-sky-600 bg-sky-500 text-white"
-                              : "border-black/10 bg-white hover:border-sky-400 hover:bg-sky-50"
+                              : isTaken
+                                ? "border-black/5 bg-black/5 text-black/20 cursor-not-allowed"
+                                : "border-black/10 bg-white hover:border-sky-400 hover:bg-sky-50"
                           }`}
                         >
                           {seat.seatNumber}
@@ -244,8 +242,7 @@ export default function CheckoutClient({
                     })}
                   </div>
                   <div className="mt-2 text-[10px] text-black/60">
-                    Seats blocked or already taken are controlled from the admin
-                    portal and are hidden here.
+                    Seats that are greyed out are blocked or already booked.
                   </div>
                 </div>
               </div>

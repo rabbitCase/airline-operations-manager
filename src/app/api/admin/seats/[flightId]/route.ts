@@ -16,7 +16,7 @@ async function requireAdmin(request: NextRequest) {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { flightId: string } }
+  context: { params: Promise<{ flightId: string }> },
 ) {
   const session = await requireAdmin(request);
 
@@ -24,17 +24,16 @@ export async function GET(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const flightId = Number(params.flightId);
+  const { flightId } = await context.params;
+  const id = Number(flightId);
 
-  if (!flightId || Number.isNaN(flightId)) {
+  if (!id || Number.isNaN(id)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
   }
 
   const seats = await prisma.seat.findMany({
-    where: { flightId },
-    orderBy: {
-      seatNumber: "asc",
-    },
+    where: { flightId: id },
+    orderBy: { seatNumber: "asc" },
   });
 
   return NextResponse.json(seats);
@@ -42,7 +41,7 @@ export async function GET(
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { flightId: string } }
+  context: { params: Promise<{ flightId: string }> },
 ) {
   const session = await requireAdmin(request);
 
@@ -50,9 +49,10 @@ export async function PATCH(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  const flightId = Number(params.flightId);
+  const { flightId } = await context.params;
+  const id = Number(flightId);
 
-  if (!flightId || Number.isNaN(flightId)) {
+  if (!id || Number.isNaN(id)) {
     return NextResponse.json({ error: "Invalid id" }, { status: 400 });
   }
 
@@ -71,16 +71,15 @@ export async function PATCH(
     updates.map((update) =>
       prisma.seat.updateMany({
         where: {
-          flightId,
+          flightId: id,
           seatNumber: update.seatNumber,
         },
         data: {
           isBlocked: update.isBlocked,
         },
-      })
-    )
+      }),
+    ),
   );
 
   return NextResponse.json({ ok: true });
 }
-

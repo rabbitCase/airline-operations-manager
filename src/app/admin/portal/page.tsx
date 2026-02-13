@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import AdminPortalClient from "@/components/AdminPortalClient";
+import AdminPortalClient, { Flight } from "@/components/AdminPortalClient";
 
 export default async function AdminPortalPage() {
   const session = await auth.api.getSession({
@@ -19,5 +19,12 @@ export default async function AdminPortalPage() {
     },
   });
 
-  return <AdminPortalClient initialFlights={flights} />;
+  const serializedFlights: Flight[] = flights.map((flight) => ({
+    ...flight,
+    departureTime: flight.departureTime.toISOString(),
+    arrivalTime: flight.arrivalTime.toISOString(),
+    basePriceINR: Number(flight.basePriceINR),
+  }));
+
+  return <AdminPortalClient initialFlights={serializedFlights} />;
 }

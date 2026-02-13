@@ -9,7 +9,7 @@ import { INDIAN_AIRPORTS } from "@/lib/airports";
 import { signOut } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 
-type Flight = {
+export type Flight = {
   id: number;
   flightNumber: string;
   airlineName: string;
@@ -42,7 +42,9 @@ export default function AdminPortalClient({ initialFlights }: Props) {
     initialFlights[0]?.id ?? null,
   );
   const [activeTab, setActiveTab] = useState<"details" | "seats">("details");
-  const [editing, setEditing] = useState<Partial<Flight>>({});
+  const [editing, setEditing] = useState<Partial<Flight>>(
+    initialFlights[0] ?? {},
+  );
   const [seats, setSeats] = useState<Seat[]>([]);
   const [isSavingSeats, setIsSavingSeats] = useState(false);
 
@@ -55,10 +57,23 @@ export default function AdminPortalClient({ initialFlights }: Props) {
     if (activeTab !== "seats" || !selectedFlightId) {
       return;
     }
+
     fetch(`/api/admin/seats/${selectedFlightId}`)
-      .then((res) => res.json())
-      .then((data: Seat[]) => {
-        setSeats(data);
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch seats");
+        return res.json();
+      })
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setSeats(data);
+        } else {
+          console.error("Expected array but got:", data);
+          setSeats([]);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setSeats([]);
       });
   }, [activeTab, selectedFlightId]);
 
@@ -93,6 +108,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
     setFlights([...flights, created]);
     setSelectedFlightId(created.id);
     setEditing(created);
+    setSeats([]); // Clear seats for the new flight
   };
 
   const handleUpdateFlight = async () => {
@@ -134,6 +150,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
     const next = remaining[0] ?? null;
     setSelectedFlightId(next?.id ?? null);
     setEditing(next ?? {});
+    setSeats([]); // Clear seats after deletion
   };
 
   const handleToggleSeat = (seat: Seat) => {
@@ -201,6 +218,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                 className="w-full"
                 onClick={() => {
                   setSelectedFlightId(null);
+                  setSeats([]); // Clear seats when clicking "New flight"
                   setEditing({
                     flightNumber: "",
                     airlineName: "",
@@ -210,6 +228,9 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                     basePriceINR: 5500,
                     delayMinutes: 0,
                     status: "ON_TIME",
+                    gateNumber: "",
+                    departureTime: "",
+                    arrivalTime: "",
                   });
                 }}
               >
@@ -223,6 +244,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                     onClick={() => {
                       setSelectedFlightId(flight.id);
                       setEditing(flight);
+                      setSeats([]); // Clear seats immediately on switch
                     }}
                     className={`flex w-full flex-col rounded-lg border px-3 py-2 text-left text-xs transition ${
                       selectedFlightId === flight.id
