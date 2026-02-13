@@ -168,7 +168,10 @@ export default function HomeClient() {
                 <Link href="/airline">Go to project</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
-                <Link href="https://github.com/rabbitcase" target="_blank">
+                <Link
+                  href="https://github.com/rabbitCase/airline-operations-manager"
+                  target="_blank"
+                >
                   View GitHub
                 </Link>
               </Button>
