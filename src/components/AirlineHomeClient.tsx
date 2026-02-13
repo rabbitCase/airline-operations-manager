@@ -61,12 +61,18 @@ export default function AirlineHomeClient() {
 
   const handleSignOut = async () => {
     try {
-      if (session?.user.isAnonymous) {
-        await deleteAnonymousUser();
-      }
-
       await signOut({
         fetchOptions: {
+          onRequest: async () => {
+            if (session?.user.isAnonymous) {
+              try {
+                await deleteAnonymousUser();
+              } catch (err) {
+                console.error(err);
+              }
+            }
+          },
+
           onSuccess: () => {
             router.refresh();
           },
