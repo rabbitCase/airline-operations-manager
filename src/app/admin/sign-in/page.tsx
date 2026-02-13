@@ -40,7 +40,7 @@ export default function AdminSignInPage() {
           If you are a guest, visit the GitHub README to see the admin portal in
           action:{" "}
           <Link
-            href="https://github.com/rabbitcase"
+            href="https://github.com/rabbitcase/airline-operations-manager"
             target="_blank"
             className="font-bold text-blue-400"
           >
