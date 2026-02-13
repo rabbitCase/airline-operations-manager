@@ -3,6 +3,7 @@ import { DM_Serif_Display, Manrope } from "next/font/google";
 import "./globals.css";
 import { AppToaster } from "@/components/ui/sonner";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next";
 
 const display = DM_Serif_Display({
   variable: "--font-display",
@@ -29,6 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${display.variable} ${sans.variable} antialiased`}>
         {children}
+        <Analytics />
         <AppToaster />
         <Script
           src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"
