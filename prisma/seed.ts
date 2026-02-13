@@ -1,130 +1,98 @@
-import { prisma } from "@/lib/prisma";
+//AI generated seed script
+import { prisma } from "../src/lib/prisma";
+
+const rowCount = 10;
+const cols = ["A", "B", "C", "D", "E", "F"];
+const seatNumbers = Array.from({ length: rowCount }).flatMap((_, rowIndex) => {
+  const row = rowIndex + 1;
+  return cols.map((col) => `${row}${col}`);
+});
+
+const AIRPORTS = [
+  "BOM",
+  "DEL",
+  "BLR",
+  "MAA",
+  "HYD",
+  "CCU",
+  "GOI",
+  "AMD",
+  "COK",
+  "PNQ",
+];
+const AIRLINES = [
+  { name: "Air India", code: "AI", prefix: "AI" },
+  { name: "IndiGo", code: "6E", prefix: "6E" },
+  { name: "Vistara", code: "UK", prefix: "UK" },
+  { name: "SpiceJet", code: "SG", prefix: "SG" },
+  { name: "GoAir", code: "G8", prefix: "G8" },
+];
 
 async function main() {
-    await prisma.airport.createMany({
-        data: [
-            { id: 1, name: 'Chhatrapati Shivaji Maharaj International Airport', location: 'Mumbai', terminals: 2 },
-            { id: 2, name: 'Indira Gandhi International Airport', location: 'Delhi', terminals: 3 },
-            { id: 3, name: 'Kempegowda International Airport', location: 'Bengaluru', terminals: 1 },
-            { id: 4, name: 'Netaji Subhas Chandra Bose International Airport', location: 'Kolkata', terminals: 2 },
-            { id: 5, name: 'Rajiv Gandhi International Airport', location: 'Hyderabad', terminals: 1 },
-        ],
-        skipDuplicates: true,
+  await prisma.bookingSeat.deleteMany();
+  await prisma.booking.deleteMany();
+  await prisma.seat.deleteMany();
+  await prisma.flight.deleteMany();
+
+  console.log("Seeding 500 flights...");
+
+  for (let i = 0; i < 500; i++) {
+    const airline = AIRLINES[Math.floor(Math.random() * AIRLINES.length)];
+    const fromAirport = AIRPORTS[Math.floor(Math.random() * AIRPORTS.length)];
+    let toAirport = AIRPORTS[Math.floor(Math.random() * AIRPORTS.length)];
+
+    while (toAirport === fromAirport) {
+      toAirport = AIRPORTS[Math.floor(Math.random() * AIRPORTS.length)];
+    }
+
+    const day = Math.floor(Math.random() * 4) + 13;
+    const hour = Math.floor(Math.random() * 24);
+    const minute = [0, 15, 30, 45][Math.floor(Math.random() * 4)];
+
+    const departureTime = new Date(
+      `2026-02-${day}T${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}:00Z`,
+    );
+    const duration = Math.floor(Math.random() * 120) + 60; // 60-180 mins
+    const arrivalTime = new Date(departureTime.getTime() + duration * 60000);
+
+    const flight = await prisma.flight.create({
+      data: {
+        flightNumber: `${airline.prefix}${Math.floor(1000 + Math.random() * 9000)}`,
+        airlineName: airline.name,
+        airlineCode: airline.code,
+        fromAirport: fromAirport as any,
+        toAirport: toAirport as any,
+        departureTime,
+        arrivalTime,
+        durationMinutes: duration,
+        basePriceINR: Math.floor(3500 + Math.random() * 6000),
+        gateNumber: `${String.fromCharCode(65 + Math.floor(Math.random() * 5))}${Math.floor(Math.random() * 20) + 1}`,
+        delayMinutes: Math.random() > 0.85 ? Math.floor(Math.random() * 45) : 0,
+        status: Math.random() > 0.9 ? "DELAYED" : "ON_TIME",
+      },
     });
 
-    await prisma.airline.createMany({
-        data: [
-            { id: 1, name: 'Air India', code: 'AI' },
-            { id: 2, name: 'IndiGo', code: '6E' },
-            { id: 3, name: 'SpiceJet', code: 'SG' },
-            { id: 4, name: 'Vistara', code: 'UK' },
-            { id: 5, name: 'GoAir', code: 'G8' },
-        ],
-        skipDuplicates: true,
+    // Bulk create 60 seats per flight to maintain unique constraint
+    await prisma.seat.createMany({
+      data: seatNumbers.map((num) => ({
+        flightId: flight.id,
+        seatNumber: num,
+        isBlocked: false,
+      })),
     });
 
-    await prisma.passenger.createMany({
-        data: [
-            { id: 1, name: 'Rahul Sharma', dob: new Date('1990-05-15'), phoneNumber: 9876543210 },
-            { id: 2, name: 'Anjali Gupta', dob: new Date('1985-08-22'), phoneNumber: 8765432109 },
-        ],
-        skipDuplicates: true,
-    });
+    if ((i + 1) % 50 === 0) console.log(`Created ${i + 1} flights...`);
+  }
 
-    await prisma.flight.createMany({
-        data: [
-            {
-                id: 1,
-                airlineId: 1,
-                departureAirportId: 1,
-                arrivalAirportId: 2,
-                departureTime: new Date('2025-04-12T10:00:00Z'),
-                arrivalTime: new Date('2025-04-12T12:00:00Z'),
-                delay: 0
-            },
-            {
-                id: 2,
-                airlineId: 2,
-                departureAirportId: 2,
-                arrivalAirportId: 3,
-                departureTime: new Date('2025-04-12T14:00:00Z'),
-                arrivalTime: new Date('2025-04-12T16:30:00Z'),
-                delay: 15
-            },
-            {
-                id: 3,
-                airlineId: 3,
-                departureAirportId: 3,
-                arrivalAirportId: 4,
-                departureTime: new Date('2025-04-13T08:30:00Z'),
-                arrivalTime: new Date('2025-04-13T11:00:00Z'),
-                delay: 0
-            },
-            {
-                id: 4,
-                airlineId: 1,
-                departureAirportId: 4,
-                arrivalAirportId: 5,
-                departureTime: new Date('2025-04-13T15:00:00Z'),
-                arrivalTime: new Date('2025-04-13T17:15:00Z'),
-                delay: 5
-            },
-            {
-                id: 5,
-                airlineId: 4,
-                departureAirportId: 5,
-                arrivalAirportId: 1,
-                departureTime: new Date('2025-04-13T02:00:00Z'),
-                arrivalTime: new Date('2025-04-13T04:00:00Z'),
-                delay: 0
-            },
-            {
-                id: 6,
-                airlineId: 4,
-                departureAirportId: 1,
-                arrivalAirportId: 2,
-                departureTime: new Date('2025-04-13T02:30:00Z'),
-                arrivalTime: new Date('2025-04-13T04:30:00Z'),
-                delay: 0
-            },
-            {
-                id: 7,
-                airlineId: 2,
-                departureAirportId: 1,
-                arrivalAirportId: 2,
-                departureTime: new Date('2025-04-13T03:00:00Z'),
-                arrivalTime: new Date('2025-04-13T05:00:00Z'),
-                delay: 0
-            },
-            {
-                id: 8,
-                airlineId: 2,
-                departureAirportId: 1,
-                arrivalAirportId: 2,
-                departureTime: new Date('2025-04-13T03:30:00Z'),
-                arrivalTime: new Date('2025-04-13T05:30:00Z'),
-                delay: 0
-            },
-            {
-                id: 9,
-                airlineId: 5,
-                departureAirportId: 1,
-                arrivalAirportId: 2,
-                departureTime: new Date('2025-04-13T04:00:00Z'),
-                arrivalTime: new Date('2025-04-13T06:00:00Z'),
-                delay: 0
-            }
-        ],
-        skipDuplicates: true,
-    });
+  console.log("Seeding completed successfully.");
 }
 
 main()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-    });
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
+  });

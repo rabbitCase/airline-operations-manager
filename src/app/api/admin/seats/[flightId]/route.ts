@@ -1,0 +1,86 @@
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+
+async function requireAdmin(request: NextRequest) {
+  const session = await auth.api.getSession({
+    headers: request.headers,
+  });
+
+  if (!session || !session.user || (session.user as any).role !== "ADMIN") {
+    return null;
+  }
+
+  return session;
+}
+
+export async function GET(
+  request: NextRequest,
+  { params }: { params: { flightId: string } }
+) {
+  const session = await requireAdmin(request);
+
+  if (!session) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const flightId = Number(params.flightId);
+
+  if (!flightId || Number.isNaN(flightId)) {
+    return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+  }
+
+  const seats = await prisma.seat.findMany({
+    where: { flightId },
+    orderBy: {
+      seatNumber: "asc",
+    },
+  });
+
+  return NextResponse.json(seats);
+}
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: { flightId: string } }
+) {
+  const session = await requireAdmin(request);
+
+  if (!session) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const flightId = Number(params.flightId);
+
+  if (!flightId || Number.isNaN(flightId)) {
+    return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+  }
+
+  const body = await request.json();
+
+  const updates = body as {
+    seatNumber: string;
+    isBlocked: boolean;
+  }[];
+
+  if (!Array.isArray(updates) || updates.length === 0) {
+    return NextResponse.json({ error: "No updates" }, { status: 400 });
+  }
+
+  await prisma.$transaction(
+    updates.map((update) =>
+      prisma.seat.updateMany({
+        where: {
+          flightId,
+          seatNumber: update.seatNumber,
+        },
+        data: {
+          isBlocked: update.isBlocked,
+        },
+      })
+    )
+  );
+
+  return NextResponse.json({ ok: true });
+}
+
