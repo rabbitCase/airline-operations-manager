@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { INDIAN_AIRPORTS } from "@/lib/airports";
-import { getSession, signOut } from "@/lib/auth-client";
+import { deleteAnonymousUser, signOut, useSession } from "@/lib/auth-client";
 
 type AirportOption = {
   code: string;
@@ -38,6 +38,7 @@ const airportOptions = buildAirportOptions();
 
 export default function AirlineHomeClient() {
   const router = useRouter();
+  const { data: session } = useSession();
   const [passengers, setPassengers] = useState("1");
   const [isStudent, setIsStudent] = useState(false);
   const [fromQuery, setFromQuery] = useState("");
@@ -48,7 +49,8 @@ export default function AirlineHomeClient() {
   const [returnDate, setReturnDate] = useState("");
   const [results, setResults] = useState<FlightResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
-  const [isLoggedOut, setIsLoggedOut] = useState(true);
+
+  const isLoggedOut = !session?.user;
 
   const filteredFrom = airportOptions.filter((a) =>
     a.label.toLowerCase().includes(fromQuery.toLowerCase()),
@@ -57,27 +59,19 @@ export default function AirlineHomeClient() {
     a.label.toLowerCase().includes(toQuery.toLowerCase()),
   );
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const session = await getSession();
-        if (session.data?.user) {
-          setIsLoggedOut(false);
-        } else {
-          setIsLoggedOut(true);
-        }
-      } catch (err) {
-        console.error("Auth check failed", err);
-        setIsLoggedOut(true);
-      }
-    };
-    checkAuth();
-  }, []);
-
   const handleSignOut = async () => {
-    await signOut();
-    setIsLoggedOut(true);
-    router.push("/airline");
+    try {
+      await deleteAnonymousUser();
+    } catch (err) {
+      console.error("Failed to delete anonymous user", err);
+    }
+    await signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.refresh();
+        },
+      },
+    });
   };
 
   const handleSearch = async () => {
@@ -294,7 +288,9 @@ export default function AirlineHomeClient() {
               <span className="text-xs uppercase tracking-[0.24em] text-black/50">
                 {results.length === 0
                   ? "No results yet"
-                  : `${results.length} options`}
+                  : results.length === 1
+                    ? `${results.length} option`
+                    : `${results.length} options`}
               </span>
             </div>
             <div className="space-y-3">

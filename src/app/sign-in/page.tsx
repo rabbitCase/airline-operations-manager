@@ -5,6 +5,7 @@ import { useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { signIn } from "@/lib/auth-client";
 
 function SignInForm() {
   const searchParams = useSearchParams();
@@ -15,11 +16,10 @@ function SignInForm() {
   const handleGuestSignIn = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch("/api/auth/demo-guest", {
-        method: "POST",
-      });
-      if (response.ok) {
+      const { data, error } = await signIn.anonymous();
+      if (!error) {
         router.push(redirectTo);
+        router.refresh();
       }
     } finally {
       setIsSubmitting(false);

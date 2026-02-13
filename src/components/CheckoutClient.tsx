@@ -101,27 +101,28 @@ export default function CheckoutClient({
 
     setIsCheckingOut(true);
     try {
-      const response = await fetch("/api/bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          flightId: flight.id,
-          passengersCount: passengers,
-          isStudent,
-          mealPreference: meal,
-          discountCredits: extraCredits ? 1 : 0,
-          extraBaggageKg: extraBaggage ? 10 : 0,
-          seatNumbers: selectedSeats,
-        }),
-      });
+      toast.success("Demo checkout completed");
+      // const response = await fetch("/api/bookings", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     flightId: flight.id,
+      //     passengersCount: passengers,
+      //     isStudent,
+      //     mealPreference: meal,
+      //     discountCredits: extraCredits ? 1 : 0,
+      //     extraBaggageKg: extraBaggage ? 10 : 0,
+      //     seatNumbers: selectedSeats,
+      //   }),
+      // });
 
-      if (response.ok) {
-        toast.success("Demo checkout completed");
-      } else {
-        toast.error("Something went wrong during checkout");
-      }
+      // if (response.ok) {
+      //   toast.success("Demo checkout completed");
+      // } else {
+      //   toast.error("Something went wrong during checkout");
+      // }
     } finally {
       setIsCheckingOut(false);
     }
@@ -153,8 +154,9 @@ export default function CheckoutClient({
                 </div>
               </div>
               <div className="text-xs text-black/60 pt-1">
-                This account represents John Doe with role USER. Use the admin
-                portal to control which flights and seats are available.
+                This account represents an anonymous user without admin
+                privileges. The admin portal controls which flights and seats
+                are available.
               </div>
             </CardContent>
           </Card>
