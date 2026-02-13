@@ -37,16 +37,15 @@ export default function AdminSignInPage() {
     <div className="min-h-screen bg-[#eee] flex items-center justify-center px-4">
       <div className="w-full max-w-md rounded-2xl border border-black/10 bg-white p-8 shadow-sm space-y-6">
         <p className="text-md text-black/70">
-          If you are a guest, visit the GitHub README to see the admin portal in
-          action:{" "}
+          If you are a guest, visit the GitHub{" "}
           <Link
-            href="https://github.com/rabbitcase/airline-operations-manager"
+            href="https://github.com/rabbitCase/airline-operations-manager/blob/main/README.md"
             target="_blank"
-            className="font-bold text-blue-400"
+            className="font-bold text-blue-400 underline"
           >
-            github.com/rabbitcase
-          </Link>
-          .
+            README
+          </Link>{" "}
+          to see the admin portal in action .
         </p>
         <div className="space-y-2">
           <h1 className="font-display text-2xl tracking-tight">
