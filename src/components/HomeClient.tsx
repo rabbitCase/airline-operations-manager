@@ -7,7 +7,6 @@ import Image from "next/image";
 
 export default function HomeClient() {
   useEffect(() => {
-    // Initialize particles.js
     if (typeof window !== "undefined" && (window as any).particlesJS) {
       (window as any).particlesJS("particles-js", {
         particles: {
@@ -104,16 +103,16 @@ export default function HomeClient() {
     <div className="min-h-screen bg-gradient-to-b from-[#eee] via-[#e4f3ff] to-[#eee] text-black flex flex-col items-center relative overflow-hidden">
       <div id="particles-js" className="absolute inset-0 z-0" />
       <div className="relative z-10 w-full flex flex-col min-h-screen">
-        <div className="w-full flex justify-between items-center px-10 pt-8">
-          <div className="flex items-center gap-3">
-            <span className="font-semibold text-lg tracking-wide">
+        <div className="w-full flex flex-col gap-4 px-4 pt-6 sm:flex-row sm:justify-between sm:items-center sm:px-6 sm:pt-8 md:px-8 lg:px-10 xl:px-12">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="font-semibold text-base tracking-wide sm:text-lg">
               Gokul Nair
             </span>
             <Link
               href="https://github.com/rabbitCase"
               target="_blank"
               rel="noopener noreferrer"
-              className="size-7 flex items-center justify-center text-whit"
+              className="flex h-6 w-6 items-center justify-center sm:h-7 sm:w-7"
               aria-label="GitHub"
             >
               <Image
@@ -129,19 +128,19 @@ export default function HomeClient() {
               href="https://linkedin.com/in/gokul-nair-819252285/"
               target="_blank"
               rel="noopener noreferrer"
-              className="size-10 flex items-center justify-center text-white"
+              className="flex h-8 w-8 items-center justify-center sm:h-10 sm:w-10"
               aria-label="LinkedIn"
             >
               <Image
                 src={"/linkedin-svgrepo-com.svg"}
-                alt="GitHub"
+                alt="LinkedIn"
                 width={0}
                 height={0}
                 className="h-full w-auto"
               />
             </Link>
           </div>
-          <div className="flex items-center gap-3 text-xs uppercase tracking-[0.2em] text-black/60">
+          <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.15em] text-black/60 sm:gap-3 sm:text-xs sm:tracking-[0.2em]">
             <span>Plan</span>
             <span className="size-1 rounded-full bg-black/40" />
             <span>Book</span>
@@ -150,24 +149,29 @@ export default function HomeClient() {
           </div>
         </div>
 
-        <main className="flex flex-1 flex-col items-center justify-center px-4">
-          <div className="text-center space-y-6 animate-fade-up">
-            <p className="text-xs tracking-[0.3em] uppercase text-black/60">
+        <main className="flex flex-1 flex-col items-center justify-center px-4 py-8 sm:px-6 md:px-8">
+          <div className="text-center space-y-4 sm:space-y-6 animate-fade-up max-w-4xl">
+            <p className="text-[10px] tracking-[0.25em] uppercase text-black/60 sm:text-xs sm:tracking-[0.3em]">
               Fasten Your Seat Belts
             </p>
-            <h1 className="font-display text-5xl md:text-6xl tracking-tight">
+            <h1 className="font-display text-3xl tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               Airline Management System
             </h1>
-            <p className="max-w-xl mx-auto text-sm md:text-base text-black/70">
+            <p className="mx-auto max-w-xl text-xs text-black/70 sm:text-sm md:text-base lg:max-w-2xl">
               Explore a demo airline experience with live flight search, dynamic
               pricing, seat management, and an admin portal that orchestrates it
               all.
             </p>
-            <div className="flex items-center justify-center gap-4 pt-4">
-              <Button asChild size="lg">
+            <div className="flex flex-col items-center justify-center gap-3 pt-2 sm:flex-row sm:gap-4 sm:pt-4">
+              <Button asChild size="lg" className="w-full sm:w-auto">
                 <Link href="/airline">Go to project</Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
                 <Link
                   href="https://github.com/rabbitCase/airline-operations-manager"
                   target="_blank"

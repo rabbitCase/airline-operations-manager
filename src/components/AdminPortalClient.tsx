@@ -108,7 +108,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
     setFlights([...flights, created]);
     setSelectedFlightId(created.id);
     setEditing(created);
-    setSeats([]); // Clear seats for the new flight
+    setSeats([]);
   };
 
   const handleUpdateFlight = async () => {
@@ -150,7 +150,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
     const next = remaining[0] ?? null;
     setSelectedFlightId(next?.id ?? null);
     setEditing(next ?? {});
-    setSeats([]); // Clear seats after deletion
+    setSeats([]);
   };
 
   const handleToggleSeat = (seat: Seat) => {
@@ -183,20 +183,22 @@ export default function AdminPortalClient({ initialFlights }: Props) {
   const airportOptions = INDIAN_AIRPORTS.map((a) => a.code);
 
   return (
-    <div className="min-h-screen bg-[#eee] px-4 py-6">
-      <div className="mx-auto max-w-6xl space-y-6">
-        <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-[#eee] px-3 py-4 sm:px-4 sm:py-6 lg:px-6 lg:py-8">
+      <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h1 className="font-display text-2xl tracking-tight">
+            <h1 className="font-display text-xl tracking-tight sm:text-2xl lg:text-3xl">
               Admin portal
             </h1>
-            <p className="text-sm text-black/60">
+            <p className="mt-1 text-xs text-black/60 sm:text-sm">
               Control the flights, pricing, delays, gates, and seat maps that
               power the demo frontend.
             </p>
           </div>
           <Button
             variant="outline"
+            size="sm"
+            className="w-full sm:w-auto"
             onClick={() => {
               signOut();
               router.push("/admin/sign-in");
@@ -206,19 +208,19 @@ export default function AdminPortalClient({ initialFlights }: Props) {
           </Button>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-[minmax(0,260px)_minmax(0,1fr)]">
-          <Card className="border-black/15 bg-white/90">
-            <CardHeader>
-              <CardTitle className="text-sm">Flights</CardTitle>
+        <div className="grid gap-4 lg:grid-cols-[minmax(0,280px)_minmax(0,1fr)] xl:grid-cols-[minmax(0,320px)_minmax(0,1fr)]">
+          <Card className="border-black/15 bg-white/90 lg:sticky lg:top-4 lg:self-start">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-sm sm:text-base">Flights</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm">
+            <CardContent className="space-y-2 text-xs sm:space-y-3 sm:text-sm">
               <Button
                 variant="outline"
                 size="sm"
                 className="w-full"
                 onClick={() => {
                   setSelectedFlightId(null);
-                  setSeats([]); // Clear seats when clicking "New flight"
+                  setSeats([]);
                   setEditing({
                     flightNumber: "",
                     airlineName: "",
@@ -228,45 +230,30 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                     basePriceINR: 5500,
                     delayMinutes: 0,
                     status: "ON_TIME",
-                    gateNumber: "",
-                    departureTime: "",
-                    arrivalTime: "",
                   });
                 }}
               >
                 New flight
               </Button>
-              <div className="max-h-[420px] space-y-2 overflow-y-auto pt-1">
+              <div className="max-h-[300px] space-y-1.5 overflow-y-auto sm:max-h-[400px] lg:max-h-[500px]">
                 {flights.map((flight) => (
                   <button
-                    key={flight.id}
                     type="button"
+                    key={flight.id}
                     onClick={() => {
                       setSelectedFlightId(flight.id);
                       setEditing(flight);
-                      setSeats([]); // Clear seats immediately on switch
+                      setSeats([]);
                     }}
-                    className={`flex w-full flex-col rounded-lg border px-3 py-2 text-left text-xs transition ${
+                    className={`w-full rounded-md border p-2 text-left text-xs transition sm:p-2.5 sm:text-sm ${
                       selectedFlightId === flight.id
-                        ? "border-sky-500 bg-sky-50"
-                        : "border-black/10 bg-white hover:border-sky-400"
+                        ? "border-sky-600 bg-sky-50"
+                        : "border-black/10 bg-white hover:border-sky-400 hover:bg-sky-50/50"
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-semibold">
-                        {flight.flightNumber}
-                      </span>
-                      <span className="text-[10px] uppercase tracking-[0.18em] text-black/50">
-                        {flight.status}
-                      </span>
-                    </div>
-                    <div className="mt-0.5 flex items-center gap-2 text-[11px] text-black/70">
-                      <span>{flight.fromAirport}</span>
-                      <span>→</span>
-                      <span>{flight.toAirport}</span>
-                    </div>
-                    <div className="mt-0.5 text-[10px] text-black/50">
-                      ₹{flight.basePriceINR.toLocaleString("en-IN")}
+                    <div className="font-medium">{flight.flightNumber}</div>
+                    <div className="text-[10px] text-black/60 sm:text-xs">
+                      {flight.fromAirport} to {flight.toAirport}
                     </div>
                   </button>
                 ))}
@@ -274,39 +261,34 @@ export default function AdminPortalClient({ initialFlights }: Props) {
             </CardContent>
           </Card>
 
-          <div className="space-y-4">
-            <div className="flex gap-2 text-xs">
-              <button
-                type="button"
+          <div className="space-y-3 sm:space-y-4">
+            <div className="flex gap-2 overflow-x-auto">
+              <Button
+                variant={activeTab === "details" ? "default" : "outline"}
+                size="sm"
                 onClick={() => setActiveTab("details")}
-                className={`rounded-full px-3 py-1 ${
-                  activeTab === "details"
-                    ? "bg-black text-[#eee]"
-                    : "bg-white text-black/70"
-                }`}
+                className="whitespace-nowrap text-xs sm:text-sm"
               >
                 Flight details
-              </button>
-              <button
-                type="button"
+              </Button>
+              <Button
+                variant={activeTab === "seats" ? "default" : "outline"}
+                size="sm"
                 onClick={() => setActiveTab("seats")}
-                className={`rounded-full px-3 py-1 ${
-                  activeTab === "seats"
-                    ? "bg-black text-[#eee]"
-                    : "bg-white text-black/70"
-                }`}
+                className="whitespace-nowrap text-xs sm:text-sm"
               >
                 Seat map
-              </button>
+              </Button>
             </div>
+
             {activeTab === "details" && (
               <Card className="border-black/15 bg-white/95">
-                <CardHeader>
-                  <CardTitle className="text-sm">
-                    {selectedFlight ? "Edit flight" : "Create flight"}
+                <CardHeader className="pb-3 sm:pb-6">
+                  <CardTitle className="text-sm sm:text-base">
+                    {selectedFlight ? "Edit flight" : "Create new flight"}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="grid gap-3 md:grid-cols-2 text-sm">
+                <CardContent className="grid grid-cols-1 gap-3 text-xs sm:grid-cols-2 sm:gap-4 sm:text-sm">
                   <div className="space-y-2">
                     <Label htmlFor="flightNumber">Flight number</Label>
                     <Input
@@ -318,6 +300,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           flightNumber: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -331,6 +314,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           airlineName: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -344,12 +328,13 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           airlineCode: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
                     <Label>From airport</Label>
                     <select
-                      className="h-10 w-full rounded-md border border-black/20 bg-[#f7f7f7] px-3 text-sm"
+                      className="h-9 w-full rounded-md border border-black/20 bg-[#f7f7f7] px-3 text-xs sm:h-10 sm:text-sm"
                       value={editing.fromAirport ?? airportOptions[0]}
                       onChange={(e) =>
                         setEditing({
@@ -368,7 +353,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                   <div className="space-y-2">
                     <Label>To airport</Label>
                     <select
-                      className="h-10 w-full rounded-md border border-black/20 bg-[#f7f7f7] px-3 text-sm"
+                      className="h-9 w-full rounded-md border border-black/20 bg-[#f7f7f7] px-3 text-xs sm:h-10 sm:text-sm"
                       value={editing.toAirport ?? airportOptions[1]}
                       onChange={(e) =>
                         setEditing({
@@ -400,6 +385,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           departureTime: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -418,6 +404,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           arrivalTime: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -432,6 +419,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           basePriceINR: Number(e.target.value),
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -445,6 +433,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           gateNumber: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -459,6 +448,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           delayMinutes: Number(e.target.value),
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
                   <div className="space-y-2">
@@ -471,10 +461,11 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           status: e.target.value,
                         })
                       }
+                      className="text-xs sm:text-sm"
                     />
                   </div>
-                  <div className="col-span-2 flex items-center justify-between pt-2">
-                    <div className="space-x-2">
+                  <div className="col-span-1 flex flex-col gap-3 pt-2 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:space-x-2">
                       <Button
                         size="sm"
                         onClick={
@@ -482,6 +473,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                             ? handleUpdateFlight
                             : handleCreateFlight
                         }
+                        className="w-full sm:w-auto"
                       >
                         {selectedFlight ? "Save changes" : "Create flight"}
                       </Button>
@@ -490,13 +482,14 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           size="sm"
                           variant="outline"
                           onClick={handleDeleteFlight}
+                          className="w-full sm:w-auto"
                         >
                           Delete
                         </Button>
                       )}
                     </div>
                     {selectedFlight && (
-                      <div className="text-xs text-black/50">
+                      <div className="text-[10px] text-black/50 sm:text-xs">
                         Duration:{" "}
                         {Math.round((selectedFlight.durationMinutes ?? 0) / 60)}
                         h {selectedFlight.durationMinutes % 60}m
@@ -509,10 +502,12 @@ export default function AdminPortalClient({ initialFlights }: Props) {
 
             {activeTab === "seats" && (
               <Card className="border-black/15 bg-white/95">
-                <CardHeader>
-                  <CardTitle className="text-sm">Seat map</CardTitle>
+                <CardHeader className="pb-3 sm:pb-6">
+                  <CardTitle className="text-sm sm:text-base">
+                    Seat map
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-3 text-xs">
+                <CardContent className="space-y-3 text-xs sm:text-sm">
                   {!selectedFlight && (
                     <div className="text-black/60">
                       Select or create a flight first.
@@ -520,12 +515,12 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                   )}
                   {selectedFlight && (
                     <>
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                         <div>
-                          <div className="font-medium">
+                          <div className="font-medium text-sm sm:text-base">
                             {selectedFlight.flightNumber}
                           </div>
-                          <div className="text-[11px] text-black/60">
+                          <div className="text-[10px] text-black/60 sm:text-xs">
                             {selectedFlight.fromAirport} to{" "}
                             {selectedFlight.toAirport}
                           </div>
@@ -535,18 +530,19 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                           variant="outline"
                           onClick={handleSaveSeats}
                           disabled={isSavingSeats}
+                          className="w-full sm:w-auto"
                         >
                           {isSavingSeats ? "Saving..." : "Save seat map"}
                         </Button>
                       </div>
-                      <div className="mt-2 rounded-xl border border-dashed border-black/15 bg-[#f8fafc] p-3">
-                        <div className="grid grid-cols-6 gap-1">
+                      <div className="mt-2 rounded-xl border border-dashed border-black/15 bg-[#f8fafc] p-2.5 sm:p-3">
+                        <div className="grid grid-cols-6 gap-1 sm:gap-1.5">
                           {seats.map((seat) => (
                             <button
                               key={seat.id}
                               type="button"
                               onClick={() => handleToggleSeat(seat)}
-                              className={`flex h-7 items-center justify-center rounded-md border text-[11px] transition ${
+                              className={`flex h-8 items-center justify-center rounded-md border text-[10px] transition sm:h-7 sm:text-[11px] ${
                                 seat.isBlocked
                                   ? "border-black bg-black text-[#eee]"
                                   : "border-black/10 bg-white hover:border-sky-400 hover:bg-sky-50"
@@ -556,7 +552,7 @@ export default function AdminPortalClient({ initialFlights }: Props) {
                             </button>
                           ))}
                         </div>
-                        <div className="mt-2 flex items-center gap-3 text-[10px] text-black/60">
+                        <div className="mt-2 flex flex-wrap items-center gap-2 text-[9px] text-black/60 sm:gap-3 sm:text-[10px]">
                           <span className="flex items-center gap-1">
                             <span className="inline-block size-3 rounded-sm border border-black/20 bg-white" />
                             <span>Available</span>

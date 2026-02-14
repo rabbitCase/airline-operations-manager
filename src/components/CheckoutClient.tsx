@@ -129,31 +129,31 @@ export default function CheckoutClient({
   };
 
   return (
-    <div className="min-h-screen bg-[#eee] px-4 py-6">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 md:grid md:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)]">
-        <div className="space-y-4">
+    <div className="min-h-screen bg-[#eee] px-3 py-4 sm:px-4 sm:py-6 lg:px-6 lg:py-8">
+      <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:gap-6 lg:grid lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)] xl:gap-8">
+        <div className="space-y-3 sm:space-y-4">
           <Card className="border-black/15 bg-white/90">
-            <CardHeader>
-              <CardTitle className="flex items-center justify-between text-lg">
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="flex flex-col gap-2 text-base sm:flex-row sm:items-center sm:justify-between sm:text-lg">
                 <span>Traveller</span>
-                <span className="text-xs uppercase tracking-[0.2em] text-black/50">
+                <span className="text-[10px] uppercase tracking-[0.15em] text-black/50 sm:text-xs sm:tracking-[0.2em]">
                   Guest session
                 </span>
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-sm">
-              <div className="flex items-center justify-between">
+            <CardContent className="space-y-2 text-xs sm:text-sm">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <div className="font-medium">{user.name ?? "John Doe"}</div>
-                  <div className="text-xs text-black/60">
+                  <div className="text-[11px] text-black/60 sm:text-xs">
                     {user.email ?? "john.doe.demo@demo-ams.local"}
                   </div>
                 </div>
-                <div className="rounded-full bg-black px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#eee]">
+                <div className="self-start rounded-full bg-black px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.15em] text-[#eee] sm:px-3 sm:text-[10px] sm:tracking-[0.18em]">
                   Demo user
                 </div>
               </div>
-              <div className="text-xs text-black/60 pt-1">
+              <div className="pt-1 text-[11px] text-black/60 sm:text-xs">
                 This account represents an anonymous user without admin
                 privileges. The admin portal controls which flights and seats
                 are available.
@@ -162,24 +162,26 @@ export default function CheckoutClient({
           </Card>
 
           <Card className="border-black/15 bg-white/90">
-            <CardHeader>
-              <CardTitle className="text-lg">Flight and seats</CardTitle>
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-base sm:text-lg">
+                Flight and seats
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4 text-sm">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-[#7b0b0b] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-[#eee]">
+            <CardContent className="space-y-3 text-xs sm:space-y-4 sm:text-sm">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="rounded-full bg-[#7b0b0b] px-2 py-0.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-[#eee] sm:text-[10px] sm:tracking-[0.16em]">
                       {flight.airlineName}
                     </span>
-                    <span className="text-xs text-black/60">
+                    <span className="text-[11px] text-black/60 sm:text-xs">
                       {flight.flightNumber}
                     </span>
                   </div>
-                  <div className="mt-1 text-sm font-semibold">
+                  <div className="mt-1.5 text-sm font-semibold sm:mt-1 sm:text-base">
                     {flight.fromAirport} to {flight.toAirport}
                   </div>
-                  <div className="mt-1 text-xs text-black/60 flex gap-4">
+                  <div className="mt-1.5 flex flex-col gap-1 text-[11px] text-black/60 sm:mt-1 sm:flex-row sm:gap-4 sm:text-xs">
                     <span>
                       Departs{" "}
                       {new Date(flight.departureTime).toLocaleString([], {
@@ -200,7 +202,7 @@ export default function CheckoutClient({
                     </span>
                   </div>
                 </div>
-                <div className="text-right text-xs text-black/60">
+                <div className="flex gap-4 text-[11px] text-black/60 sm:flex-col sm:gap-0 sm:text-right sm:text-xs">
                   <div>
                     {Math.round(flight.durationMinutes / 60)}h{" "}
                     {flight.durationMinutes % 60}m
@@ -214,13 +216,13 @@ export default function CheckoutClient({
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>Seat selection</Label>
-                  <span className="text-[10px] text-black/50">
+                  <Label className="text-xs sm:text-sm">Seat selection</Label>
+                  <span className="text-[9px] text-black/50 sm:text-[10px]">
                     {selectedSeats.length}/{passengers} selected
                   </span>
                 </div>
-                <div className="rounded-xl border border-dashed border-black/15 bg-[#f8fafc] p-3">
-                  <div className="grid grid-cols-6 gap-1 text-xs">
+                <div className="rounded-xl border border-dashed border-black/15 bg-[#f8fafc] p-2.5 sm:p-3">
+                  <div className="grid grid-cols-6 gap-1 text-xs sm:gap-1.5">
                     {seats.map((seat) => {
                       const isTaken = seat.isBlocked || !!seat.bookingSeat;
                       const active = selectedSeats.includes(seat.seatNumber);
@@ -230,7 +232,7 @@ export default function CheckoutClient({
                           type="button"
                           disabled={isTaken}
                           onClick={() => handleToggleSeat(seat.seatNumber)}
-                          className={`flex h-7 items-center justify-center rounded-md border text-[11px] transition ${
+                          className={`flex h-8 items-center justify-center rounded-md border text-[10px] transition sm:h-7 sm:text-[11px] ${
                             active
                               ? "border-sky-600 bg-sky-500 text-white"
                               : isTaken
@@ -243,21 +245,22 @@ export default function CheckoutClient({
                       );
                     })}
                   </div>
-                  <div className="mt-2 text-[10px] text-black/60">
+                  <div className="mt-2 text-[9px] text-black/60 sm:text-[10px]">
                     Seats that are greyed out are blocked or already booked.
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="space-y-2">
-                  <Label>Meal preference</Label>
+                  <Label className="text-xs sm:text-sm">Meal preference</Label>
                   <div className="flex gap-2">
                     <Button
                       type="button"
                       variant={meal === "veg" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setMeal("veg")}
+                      className="flex-1 text-xs sm:flex-none sm:text-sm"
                     >
                       Veg
                     </Button>
@@ -266,6 +269,7 @@ export default function CheckoutClient({
                       variant={meal === "non-veg" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setMeal("non-veg")}
+                      className="flex-1 text-xs sm:flex-none sm:text-sm"
                     >
                       Non-veg
                     </Button>
@@ -274,15 +278,16 @@ export default function CheckoutClient({
                       variant={meal === "none" ? "default" : "outline"}
                       size="sm"
                       onClick={() => setMeal("none")}
+                      className="flex-1 text-xs sm:flex-none sm:text-sm"
                     >
                       None
                     </Button>
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label>Extras</Label>
-                  <div className="space-y-2 text-xs">
-                    <div className="flex items-center justify-between">
+                  <Label className="text-xs sm:text-sm">Extras</Label>
+                  <div className="space-y-2 text-[11px] sm:text-xs">
+                    <div className="flex items-center justify-between gap-2">
                       <span>Discount credits for future flights</span>
                       <Switch
                         checked={extraCredits}
@@ -291,7 +296,7 @@ export default function CheckoutClient({
                         }
                       />
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <span>Additional 10kg baggage</span>
                       <Switch
                         checked={extraBaggage}
@@ -307,12 +312,14 @@ export default function CheckoutClient({
           </Card>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4 lg:sticky lg:top-4 lg:self-start">
           <Card className="border-black/15 bg-white/95">
-            <CardHeader>
-              <CardTitle className="text-lg">Fare summary</CardTitle>
+            <CardHeader className="pb-3 sm:pb-6">
+              <CardTitle className="text-base sm:text-lg">
+                Fare summary
+              </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3 text-sm">
+            <CardContent className="space-y-2.5 text-xs sm:space-y-3 sm:text-sm">
               <div className="flex items-center justify-between">
                 <span>Base fare</span>
                 <span>₹{baseFare.toLocaleString("en-IN")}</span>
@@ -337,19 +344,19 @@ export default function CheckoutClient({
                   <span>₹{extraBaggageFee.toLocaleString("en-IN")}</span>
                 </div>
               )}
-              <div className="h-px bg-linear-to-r from-transparent via-black/20 to-transparent my-2" />
-              <div className="flex items-center justify-between text-base font-semibold">
+              <div className="my-2 h-px bg-gradient-to-r from-transparent via-black/20 to-transparent" />
+              <div className="flex items-center justify-between text-sm font-semibold sm:text-base">
                 <span>Total</span>
                 <span>₹{total.toLocaleString("en-IN")}</span>
               </div>
               <Button
-                className="w-full mt-4"
+                className="mt-3 w-full sm:mt-4"
                 onClick={handleCheckout}
                 disabled={isCheckingOut}
               >
                 {isCheckingOut ? "Processing..." : "Checkout"}
               </Button>
-              <p className="text-[11px] text-black/60">
+              <p className="text-[10px] text-black/60 sm:text-[11px]">
                 Clicking checkout will not charge you. A toast will confirm that
                 the demo has been completed.
               </p>
