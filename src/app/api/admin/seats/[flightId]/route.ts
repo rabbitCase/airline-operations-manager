@@ -69,16 +69,18 @@ export async function PATCH(
 
   await prisma.$transaction(
     async (tx) => {
-      updates.map((update) =>
-        tx.seat.updateMany({
-          where: {
-            flightId: id,
-            seatNumber: update.seatNumber,
-          },
-          data: {
-            isBlocked: update.isBlocked,
-          },
-        }),
+      await Promise.all(
+        updates.map((update) =>
+          tx.seat.updateMany({
+            where: {
+              flightId: id,
+              seatNumber: update.seatNumber,
+            },
+            data: {
+              isBlocked: update.isBlocked,
+            },
+          }),
+        ),
       );
     },
     {
