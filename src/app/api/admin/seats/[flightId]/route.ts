@@ -7,7 +7,7 @@ async function requireAdmin(request: NextRequest) {
     headers: request.headers,
   });
 
-  if (!session || !session.user || (session.user as any).role !== "ADMIN") {
+  if (!session || !session.user || session.user.role !== "ADMIN") {
     return null;
   }
 
@@ -68,17 +68,23 @@ export async function PATCH(
   }
 
   await prisma.$transaction(
-    updates.map((update) =>
-      prisma.seat.updateMany({
-        where: {
-          flightId: id,
-          seatNumber: update.seatNumber,
-        },
-        data: {
-          isBlocked: update.isBlocked,
-        },
-      }),
-    ),
+    async (tx) => {
+      updates.map((update) =>
+        tx.seat.updateMany({
+          where: {
+            flightId: id,
+            seatNumber: update.seatNumber,
+          },
+          data: {
+            isBlocked: update.isBlocked,
+          },
+        }),
+      );
+    },
+    {
+      timeout: 6000,
+      maxWait: 5000,
+    },
   );
 
   return NextResponse.json({ ok: true });
