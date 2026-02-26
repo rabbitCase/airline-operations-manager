@@ -67,27 +67,37 @@ export async function PATCH(
     return NextResponse.json({ error: "No updates" }, { status: 400 });
   }
 
-  await prisma.$transaction(
-    async (tx) => {
-      await Promise.all(
-        updates.map((update) =>
-          tx.seat.updateMany({
-            where: {
-              flightId: id,
-              seatNumber: update.seatNumber,
-            },
-            data: {
-              isBlocked: update.isBlocked,
-            },
-          }),
-        ),
-      );
-    },
-    {
-      timeout: 6000,
-      maxWait: 5000,
-    },
-  );
+  const toBlock = updates.filter((u) => u.isBlocked).map((u) => u.seatNumber);
+  const toUnblock = updates
+    .filter((u) => !u.isBlocked)
+    .map((u) => u.seatNumber);
 
-  return NextResponse.json({ ok: true });
+  try {
+    await prisma.$transaction([
+      ...(toBlock.length > 0
+        ? [
+            prisma.seat.updateMany({
+              where: { flightId: id, seatNumber: { in: toBlock } },
+              data: { isBlocked: true },
+            }),
+          ]
+        : []),
+      ...(toUnblock.length > 0
+        ? [
+            prisma.seat.updateMany({
+              where: { flightId: id, seatNumber: { in: toUnblock } },
+              data: { isBlocked: false },
+            }),
+          ]
+        : []),
+    ]);
+
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    console.error("Transaction failed:");
+    return NextResponse.json(
+      { error: "Database operation failed" },
+      { status: 500 },
+    );
+  }
 }
